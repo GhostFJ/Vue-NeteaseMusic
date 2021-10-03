@@ -1,0 +1,8 @@
+# 配置ESLint忽略文件，根目录创建.eslintignore文件，内如根据需求添加配置，例如：
+/node_modules
+/dist
+*.md
+.vscode
+.idea
+/public
+/docs
