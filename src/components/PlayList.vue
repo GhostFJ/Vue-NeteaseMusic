@@ -22,7 +22,7 @@
             </div>
             <div class="count">
               <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-bofangsanjiaoxing"></use>
+                <use xlink:href="#icon-play"></use>
               </svg>
               <span>
                 {{filterNums(item.playCount)}}
@@ -38,7 +38,7 @@
 
 <script>
 import {
-  computed, onMounted, reactive, toRefs,
+  onMounted, reactive, toRefs,
 } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
@@ -137,14 +137,15 @@ export default {
           right: 0.1rem;
           top: 0.1rem;
           background-color: rgb(39, 39, 39);
-          color: #ccc;
+          color: #fff;
           opacity: 70%;
           border-radius: 0.2rem;
+          font-weight: 900;
           // border: 0px solid ;
           .icon {
             width: 0.3rem;
             height: 0.25rem;
-            fill: #ccc;
+            fill: #fff;
           }
           span {
             font-size: 0.1rem;

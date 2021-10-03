@@ -44,7 +44,7 @@ export default defineConfig({
   },
   proxy: { // 本地开发环境通过代理实现跨域，生产环境使用 nginx 转发
     '/api': {
-      target: 'http://127.0.0.1:3000', // 后端服务实际地址
+      target: 'http://127.0.0.1:3000/', // 后端服务实际地址
       changeOrigin: true,
       rewrite: (url) => url.replace(/^\/api/, ''),
     },
