@@ -35,7 +35,7 @@
         </div>
 
         <div class="right">
-          <svg class="icon" aria-hidden="true">
+          <svg class="icon" aria-hidden="true" @click="playMusic(id)">
             <use xlink:href="#icon-bofang1"></use>
           </svg>
           <svg class="icon" aria-hidden="true">
@@ -50,12 +50,19 @@
 
 <script>
 import { onMounted, reactive, toRefs } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
   props: {
     playlist: Object,
   },
   setup() {
+    const store = useStore();
+
+    const playMusic = (id) => {
+      store.commit('player/SET_PLAY_ID', id);
+    };
+
     const filterNums = (num) => {
       let res;
       if (num > 100000000) {
@@ -69,6 +76,7 @@ export default {
     };
 
     return {
+      playMusic,
       filterNums,
     };
   },
@@ -136,7 +144,7 @@ export default {
         display: flex;
         align-items: center;
         .title {
-          font-size: 0.35rem;
+          font-size: 0.3rem;
           // font-weight: 500;
         }
         .index {
@@ -162,6 +170,8 @@ export default {
       }
       .right {
         .icon {
+          width: 0.4rem;
+          height: 0.4rem;
           margin: 0 0.15rem;
         }
       }

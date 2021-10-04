@@ -8,6 +8,9 @@ const mutations = {
   SET_PLAYLIST: (state, list) => {
     state.playlist = list;
   },
+  SET_PLAY_ID: (state, id) => {
+    state.curPlayId = id;
+  },
 };
 
 const actions = {
