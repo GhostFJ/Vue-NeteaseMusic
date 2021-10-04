@@ -66,3 +66,15 @@ export function getPlayListDetail(id) {
     method: 'get',
   });
 }
+
+/**
+ * @description 获取歌词
+ * @param {number} id 歌单id
+ * @returns
+*/
+export function getLyric(id) {
+  return request({
+    url: `/lyric?id=${id}`,
+    method: 'get',
+  });
+}

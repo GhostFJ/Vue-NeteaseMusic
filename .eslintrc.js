@@ -28,6 +28,7 @@ module.exports = {
     'import/no-absolute-path': 'off',
     'import/no-extraneous-dependencies': 'off',
     'global-require': 0,
+    'no-shadow': 'off',
     'no-param-reassign': [
       'error',
       {

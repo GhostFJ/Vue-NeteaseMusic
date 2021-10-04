@@ -1,6 +1,6 @@
 <template>
-  <div class="player">
-    <div class="left" v-if="playlist[playId]">
+  <div class="player" v-if="playlist[playId]">
+    <div class="left" @click="show=!show">
       <img :src="playlist[playId].al.picUrl" alt="">
       <div class="title">
         {{playlist[playId].al.name}}
@@ -13,8 +13,8 @@
         aria-hidden="true"
         @click="playMusic"
       >
-        <use v-if="playing" xlink:href="#icon-bofang"></use>
-        <use v-else xlink:href="#icon-zanting1"></use>
+        <use v-if="playing" xlink:href="#icon-zanting"></use>
+        <use v-else xlink:href="#icon-bofang"></use>
       </svg>
 
       <svg class="icon" aria-hidden="true">
@@ -22,29 +22,45 @@
       </svg>
 
       <!-- 音乐播放器 -->
-      <audio ref="audio" :src="`https://music.163.com/song/media/outer/url?id=${playlist[playId].id}.mp3`"></audio>
+      <audio
+        ref="audio"
+        :src="`https://music.163.com/song/media/outer/url?id=${playlist[playId].id}.mp3`"
+      ></audio>
+
+      <PlayInterface
+        @back="show=!show"
+        v-show="show"
+        :playMusic="playMusic"
+        :playing="playing"
+        :detail="playlist[playId]"
+      ></PlayInterface>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import {
+  computed, ref, watch,
+} from 'vue';
 import { useStore } from 'vuex';
+import PlayInterface from '@/components/PlayInterface.vue';
 
 // vue3 中使用mapState等还是有问题的，搜索解决方法是推荐重新封装，故先这样写
 export default {
+  components: {
+    PlayInterface,
+  },
   setup() {
     const store = useStore();
 
     const audio = ref(null);
-    const playing = ref(true);
+    const playing = ref(false);
+    const show = ref(false);
 
     const playlist = computed(() => store.getters.playlist);
     const playId = computed(() => store.getters.curPlayId);
-    console.log(playlist[playId]);
 
     const playMusic = () => {
-      console.log(audio);
       if (audio.value.paused) {
         audio.value.play();
         playing.value = true;
@@ -54,8 +70,26 @@ export default {
       }
     };
 
+    // 考虑用watch来实现，因为mounted的时候，还没有初始化
+    watch([playlist, playId], ([curList, curId], [preList, preId]) => {
+      // console.log('curList: ', curList);
+      // console.log('preList: ', preList);
+      // console.log('curId: ', curId);
+      // console.log('preId: ', preId);
+      store.dispatch('player/setLyric', { id: curList[curId].id });
+    });
+
+    // onMounted(() => {
+    //   console.log(playlist, playId);
+    //   // store.dispatch('player/setLyric', { id: playlist[playId].id });
+    // });
+    // onRenderTriggered(() => {
+    //   console.log(playlist, playId);
+    // });
+
     return {
       playing,
+      show,
       playMusic,
       audio,
       playlist,
@@ -84,7 +118,7 @@ export default {
     img {
       width: 0.8rem;
       height: 0.8rem;
-
+      border-radius: 0.4rem;
     }
     .title {
       padding: 0 0.2rem;
