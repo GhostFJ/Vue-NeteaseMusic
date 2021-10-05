@@ -30,25 +30,29 @@
      <img class="photo" :src="detail.al.picUrl" alt="">
     </div>
      <!-- 歌词 -->
-    <div class="lyric" v-else  @click="showLyric=!showLyric">
-      <p :class="{active:currentTime}" v-for="(item, id) in lyric" :key="id">{{item.lyric}}</p>
+    <div ref="playLyric" class="lyric" v-else  @click="showLyric=!showLyric">
+      <p
+        :class="{active:(currentTime*1000 >= item.pre && currentTime*1000 < item.time)}"
+        v-for="(item, id) in lyric"
+        :key="id"
+      >{{item.lyric}}</p>
     </div>
 
     <div class="progress">
 
     </div>
     <div class="footer">
-      <svg class="icon" aria-hidden="true">
+      <svg class="icon" aria-hidden="true" @click="showTime">
         <use xlink:href="#icon-xunhuan"></use>
       </svg>
-      <svg class="icon" aria-hidden="true">
+      <svg class="icon" aria-hidden="true" @click="goPlay(-1)">
         <use xlink:href="#icon-shangyishoushangyige"></use>
       </svg>
       <svg class="icon bofang" aria-hidden="true" @click="playMusic">
         <use v-if="playing" xlink:href="#icon-zanting3"></use>
         <use v-else xlink:href="#icon-bofang"></use>
       </svg>
-      <svg class="icon" aria-hidden="true">
+      <svg class="icon" aria-hidden="true" @click="goPlay(1)">
         <use xlink:href="#icon-xiayigexiayishou"></use>
       </svg>
       <svg class="icon" aria-hidden="true">
@@ -59,7 +63,9 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import {
+  ref, computed, watch, toRefs,
+} from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -73,14 +79,41 @@ export default {
     currentTime: Number,
   },
   setup(props) {
+    const playLyric = ref(null);
     const store = useStore();
     const showLyric = ref(false);
 
     const lyric = computed(() => store.getters.lyric);
+    const playId = computed(() => store.getters.curPlayId);
+    const playlist = computed(() => store.getters.playlist);
 
+    const { currentTime } = toRefs(props);
+
+    const goPlay = (num) => {
+      let index = playId.value + num;
+      console.log(playlist, playId);
+      if (index < 0) {
+        index = playlist.value.length - 1;
+      } else if (index === playlist.value.length) {
+        index = 0;
+      }
+      store.commit('player/SET_PLAY_ID', index);
+    };
+
+    watch(currentTime, (newVal, oldVal) => {
+      const p = document.querySelector('p.active');
+      const { offsetTop } = p;
+      // const height = playLyric.value.offsetHeight;
+      // if (offsetTop > height) {
+      //   playLyric.value.scrollTop += (offsetTop - height / 2);
+      // }
+      playLyric.value.scrollTop = offsetTop;
+    });
     return {
       showLyric,
+      playLyric,
       lyric,
+      goPlay,
     };
   },
 };

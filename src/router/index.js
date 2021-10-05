@@ -1,6 +1,8 @@
 // 引入vue-router对象
 import { createRouter, createWebHistory } from 'vue-router';
 // import Layout from '@/layout';
+import store from '@/store/index.js';
+
 /**
   * 定义路由数组
   */
@@ -22,9 +24,32 @@ const routes = [
     component: () => import('@/views/Home.vue'),
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/Login.vue'),
+  },
+  {
+    path: '/personal',
+    name: 'Personal',
+    beforeEnter: (to, from, next) => {
+      console.log(store.state.user.loginState);
+      if(store.state.user.loginState) {
+        next();
+      } else {
+        next('login');
+      }
+    },
+    component: () => import('@/views/Personal.vue'),
+  },
+  {
     path: '/list',
     name: 'List',
     component: () => import('@/views/ListDetail.vue'),
+  },
+  {
+    path: '/search',
+    name: 'Search',
+    component: () => import('@/views/Search.vue'),
   },
 ];
 

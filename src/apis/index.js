@@ -78,3 +78,28 @@ export function getLyric(id) {
     method: 'get',
   });
 }
+
+/**
+ * @description 关键词搜索
+ * @param {string} keyword 关键词
+ * @returns
+*/
+export function getSearch(keyword) {
+  return request({
+    url: `/search?keywords=${keyword}`,
+    method: 'get',
+  });
+}
+
+/**
+ * @description 登录
+ * @param {phone: number(手机号码)， password: string(密码)}
+ * @returns
+*/
+export function login(params) {
+  return request({
+    url: '/login/cellphone',
+    method: 'get',
+    params,
+  });
+}

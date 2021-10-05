@@ -1,22 +1,22 @@
 function handleLyric(list) {
-  const data = list.split(/\n/igs).map((item, i, arr) => {
-    const min = parseInt(item.substr(1, 2), 10);
-    const sec = parseInt(item.substr(4, 2),10);
-    const mill = parseInt(item.substr(7, 3), 10);
-    let pre;
-    if (i - 1 < 0) {
-      pre = 0;
-    } else {
-      pre = arr[i - 1];
+  const data = [];
+  list.split(/\n/igs).reduce((pre, cur) => {
+    const min = parseInt(cur.substr(1, 2), 10);
+    const sec = parseInt(cur.substr(4, 2), 10);
+    const mill = parseInt(cur.substr(7, 3), 10);
+    let time = mill + sec * 1000 + min * 60 * 1000;
+    if (cur === '') {
+      time = pre;
     }
-    return {
+
+    data.push({
       pre,
-      lyric: item.slice(12),
-      content: item,
-      time: mill + sec * 1000 + min * 60 * 1000,
-    };
-  });
-  console.log(data);
+      lyric: cur.slice(11),
+      content: cur,
+      time,
+    });
+    return time;
+  }, 0);
   return data;
 }
 

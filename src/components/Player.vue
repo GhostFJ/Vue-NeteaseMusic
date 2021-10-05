@@ -41,7 +41,7 @@
 
 <script>
 import {
-  computed, onMounted, onUpdated, ref, watch,
+  computed, ref, onUpdated, watch,
 } from 'vue';
 import { useStore } from 'vuex';
 import PlayInterface from '@/components/PlayInterface.vue';
@@ -68,7 +68,6 @@ export default {
     const setTime = () => {
       intervalId.value = setInterval(() => {
         curTime.value = audio.value.currentTime;
-        console.log(audio.value.currentTime);
       }, 1000);
     };
 
@@ -93,12 +92,8 @@ export default {
       store.dispatch('player/setLyric', { id: curList[curId].id });
     });
 
-    // onMounted(() => {
-    //   console.log(playlist, playId);
-    //   // store.dispatch('player/setLyric', { id: playlist[playId].id });
-    // });
-    // onRenderTriggered(() => {
-    //   console.log(playlist, playId);
+    // onUpdated(() => {
+    //   store.dispatch('player/setLyric', { id: playlist[playId].id });
     // });
 
     return {
@@ -109,6 +104,7 @@ export default {
       playlist,
       playId,
       setTime,
+      curTime,
     };
   },
 };

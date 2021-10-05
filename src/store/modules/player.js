@@ -11,6 +11,9 @@ const mutations = {
   SET_PLAYLIST: (state, list) => {
     state.playlist = list;
   },
+  PUSH_PLAYLIST: (state, item) => {
+    state.playlist.push(item)
+  },
   SET_PLAY_ID: (state, id) => {
     state.curPlayId = id;
   },
@@ -26,7 +29,11 @@ const actions = {
 
   async setLyric({ commit }, payload) {
     const res = await getLyric(payload.id);
-    commit('SET_LYRIC', res.lrc.lyric);
+    if (res.nolyric) {
+      commit('SET_LYRIC', '');
+    } else {
+      commit('SET_LYRIC', res.lrc.lyric);
+    }
   },
 
 };
