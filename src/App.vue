@@ -1,8 +1,18 @@
 <script setup>
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
+import { useStore } from 'vuex';
+import { onMounted } from 'vue';
 import Player from '@/components/Player.vue';
 
+const store = useStore();
+
+onMounted(() => {
+  if (localStorage.userData) {
+    const userData = JSON.parse(localStorage.userData);
+    store.commit('user/SET_USER', userData);
+  }
+});
 </script>
 
 <template>

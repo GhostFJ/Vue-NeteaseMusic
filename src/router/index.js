@@ -32,8 +32,8 @@ const routes = [
     path: '/personal',
     name: 'Personal',
     beforeEnter: (to, from, next) => {
-      console.log(store.state.user.loginState);
-      if(store.state.user.loginState) {
+      console.log(store.state.user.userData.loginState);
+      if (store.state.user.userData.loginState) {
         next();
       } else {
         next('login');

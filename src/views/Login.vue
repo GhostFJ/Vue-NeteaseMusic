@@ -7,11 +7,11 @@
                         <img src="~assets/img/avatar.jpg" alt="AVATAR">
                     </div>
 
-                    <span class="login100-form-title p-t-20 p-b-45">Hello</span>
+                    <span class="login100-form-title p-t-20 p-b-45">欢迎</span>
 
                     <div class="wrap-input100 validate-input m-b-10" data-validate="请输入用户名">
                         <input
-                        v-model="phone"
+                          v-model="phone"
                           class="input100"
                           type="text"
                           name="username"
@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="container-login100-form-btn p-t-10">
-                        <button class="login100-form-btn" @click="login">登 录</button>
+                        <button type="button" class="login100-form-btn" @click="login">登 录</button>
                     </div>
 
                     <div class="text-center w-full p-t-25 p-b-230">
@@ -67,6 +67,7 @@
 <script>
 import { reactive, toRefs } from 'vue';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
@@ -76,9 +77,14 @@ export default {
     });
 
     const store = useStore();
+    const router = useRouter();
 
-    const login = () => {
-      store.dispatch('user/login', { ...state });
+    const login = async () => {
+      const result = await store.dispatch('user/login', { ...state });
+
+      if (result.code === 200) {
+        router.push('/personal');
+      }
     };
 
     return {

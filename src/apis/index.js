@@ -103,3 +103,15 @@ export function login(params) {
     params,
   });
 }
+
+/**
+ * @description 获取用户详情
+ * @param {id: 账号id， password: string(密码)}
+ * @returns
+*/
+export function getUserInfo(uid) {
+  return request({
+    url: `/user/detail?uid=${uid}`,
+    method: 'get',
+  });
+}

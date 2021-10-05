@@ -3,7 +3,7 @@
     <div class="left" @click="show=!show">
       <img :src="playlist[playId].al.picUrl" alt="">
       <div class="title">
-        {{playlist[playId].al.name}}
+        {{playlist[playId].name}}
       </div>
     </div>
 
@@ -82,6 +82,7 @@ export default {
         clearInterval(intervalId);
       }
     };
+
 
     // 考虑用watch来实现，因为mounted的时候，还没有初始化
     watch([playlist, playId], ([curList, curId], [preList, preId]) => {
