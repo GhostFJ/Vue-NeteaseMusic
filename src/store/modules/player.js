@@ -23,10 +23,12 @@ const actions = {
   setPlaylist({ commit }, list) {
     commit('SET_NAME', list);
   },
+
   async setLyric({ commit }, payload) {
     const res = await getLyric(payload.id);
     commit('SET_LYRIC', res.lrc.lyric);
   },
+
 };
 
 export default {

@@ -29,10 +29,11 @@
      <img class="disc" src="@/assets/img/frame.png" alt="">
      <img class="photo" :src="detail.al.picUrl" alt="">
     </div>
+     <!-- 歌词 -->
     <div class="lyric" v-else  @click="showLyric=!showLyric">
-      <p class="active" v-for="(item, id) in lyric" :key="id">{{item.lyric}}</p>
+      <p :class="{active:currentTime}" v-for="(item, id) in lyric" :key="id">{{item.lyric}}</p>
     </div>
-    <!-- 歌词 -->
+
     <div class="progress">
 
     </div>
@@ -69,6 +70,7 @@ export default {
     detail: Object,
     playing: Boolean,
     playMusic: Function,
+    currentTime: Number,
   },
   setup(props) {
     const store = useStore();
@@ -77,8 +79,8 @@ export default {
     const lyric = computed(() => store.getters.lyric);
 
     return {
-      lyric,
       showLyric,
+      lyric,
     };
   },
 };

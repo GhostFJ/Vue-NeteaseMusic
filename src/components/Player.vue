@@ -33,6 +33,7 @@
         :playMusic="playMusic"
         :playing="playing"
         :detail="playlist[playId]"
+        :currentTime="curTime"
       ></PlayInterface>
     </div>
   </div>
@@ -40,7 +41,7 @@
 
 <script>
 import {
-  computed, ref, watch,
+  computed, onMounted, onUpdated, ref, watch,
 } from 'vue';
 import { useStore } from 'vuex';
 import PlayInterface from '@/components/PlayInterface.vue';
@@ -60,13 +61,26 @@ export default {
     const playlist = computed(() => store.getters.playlist);
     const playId = computed(() => store.getters.curPlayId);
 
+    // 时间控制
+    const curTime = ref(0);
+    const intervalId = ref(null);
+
+    const setTime = () => {
+      intervalId.value = setInterval(() => {
+        curTime.value = audio.value.currentTime;
+        console.log(audio.value.currentTime);
+      }, 1000);
+    };
+
     const playMusic = () => {
       if (audio.value.paused) {
         audio.value.play();
+        setTime();
         playing.value = true;
       } else {
         audio.value.pause();
         playing.value = false;
+        clearInterval(intervalId);
       }
     };
 
@@ -94,6 +108,7 @@ export default {
       audio,
       playlist,
       playId,
+      setTime,
     };
   },
 };
